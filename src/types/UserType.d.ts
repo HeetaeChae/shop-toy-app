@@ -1,6 +1,14 @@
 export interface User {
-  id: number;
-  email: string;
+  id: string;
   nickname: string;
-  is_admin: boolean;
+  avatar_url: string | null;
+  roles: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export enum RolesEnum {
+  Admin = 1,
+  Seller = 2,
+  Member = 3,
 }

@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-import { User } from "../types/UserType.d";
+import { User } from "../types/userType.d";
 
 interface AdminRouteProps {
   children: ReactNode;
@@ -12,7 +12,7 @@ function AdminRoute(props: AdminRouteProps): JSX.Element {
 
   const user: User | null = useAuthContext();
 
-  if (!user || !user.is_admin) {
+  if (!user || user.roles !== 1) {
     return <Navigate to={"/"} />;
   }
 

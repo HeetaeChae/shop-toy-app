@@ -1,41 +1,73 @@
-import { Component, ErrorInfo, ReactNode } from "react";
+import React, { Component, ErrorInfo, ReactNode } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
+  fallback: React.ElementType;
+  onReset: () => void;
 }
 interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
 }
+interface FallbackProps {
+  error: Error | null;
+  resetErrorBoundary: () => void;
+}
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
+
+    // 오류여부와 오류를 state 상태로 저장.
     this.state = {
       hasError: false,
       error: null,
     };
+
+    // 이벤트 핸들러에서 호출할 함수 바인딩 처리.
+    this.resetErrorBoundary = this.resetErrorBoundary.bind(this);
   }
 
-  // getDerivedStateFromError 메소드는 하위 컴포넌트에서 오류의 정보를 return을 통해서 State에 저장하는 역할을 합니다.
-  // error 파라미터는 발생한 오류의 정보를 담고 있습니다.
+  // 오류 발생시
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    // 오류 상태 업데이트
+    // 오류 상태 업데이트.
     return {
       hasError: true,
       error,
     };
   }
 
-  // componentDidCatch 메소드는 오류 정보와 상세 정보를 파라미터로 얻을 수 있습니다.
-  // 주로 오류를 로깅해야 할때 해당 메소드에 접근해서 로깅할 수 있습니다.
+  // 오류 발생 후
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.log({ error, errorInfo });
   }
 
+  resetErrorBoundary(): void {
+    // 오류난 함수를 재요청 처리.
+    const { onReset } = this.props;
+    onReset();
+    // 에러 상태를 기본으로 초기화.
+    this.setState({
+      hasError: false,
+      error: null,
+    });
+  }
+
   render() {
-    const { hasError } = this.state;
-    const { children } = this.props;
-    return hasError ? "오류 발생" : children;
+    const { hasError, error } = this.state;
+    const { children, fallback } = this.props;
+
+    // fallback 컴포넌트 측에서 오류 정보를 props로 받을 수 있도록 설정
+    const fallbackProps: FallbackProps = {
+      error,
+      resetErrorBoundary: this.resetErrorBoundary,
+    };
+
+    if (hasError) {
+      return React.createElement(fallback, { fallbackProps });
+    }
+    return children;
   }
 }
+
+export default ErrorBoundary;

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { InputTypeEnum } from "../../types/InputType.d";
+import { InputTypeEnum } from "../../types/inputType.d";
 
 interface FormInputProps {
   type: InputTypeEnum;

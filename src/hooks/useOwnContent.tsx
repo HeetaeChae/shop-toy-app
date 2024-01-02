@@ -1,5 +1,5 @@
 import { useAuthContext } from "../context/AuthContext";
-import { User } from "../types/UserType.d";
+import { User } from "../types/userType";
 
 function useOwnContent(authorId: number) {
   const user: User | null = useAuthContext();

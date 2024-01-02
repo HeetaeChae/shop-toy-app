@@ -11,6 +11,7 @@ import ProductDetail from "./page/ProductDetail";
 import MyCart from "./page/MyCart";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SellerRoute from "./components/SellerRoute";
 
 const router = createBrowserRouter([
   {
@@ -30,9 +31,9 @@ const router = createBrowserRouter([
       {
         path: "/products/new",
         element: (
-          <AdminRoute>
+          <SellerRoute>
             <NewProduct />
-          </AdminRoute>
+          </SellerRoute>
         ),
       },
       {

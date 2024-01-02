@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 import React from "react";
-import { ButtonTypeEnum } from "../../types/ButtonType.d";
+import { ButtonTypeEnum } from "../../types/buttonType.d";
 
 interface ButtonProps {
   type: ButtonTypeEnum;
